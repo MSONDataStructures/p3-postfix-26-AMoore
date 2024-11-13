@@ -14,10 +14,10 @@ public abstract class UnaryOperator<T> implements Operator<T> {
 
     @Override
     public void setOperand(int i, Operand<T> operand) {
-        // TODO: Modify the example from the BinaryOperator
-        //   implementation to implement this UnaryOperator
-        //   abstract class (which will have NegateOperator
-        //   as a subclass).
+		if (operand == null) throw new NullPointerException();
+		if (i != 0) throw new IllegalArgumentException();
+		if (op0 != null) throw new IllegalStateException();
+		op0 = operand;
     }
 
     /**

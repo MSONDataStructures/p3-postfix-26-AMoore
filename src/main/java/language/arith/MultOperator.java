@@ -14,9 +14,9 @@ public class MultOperator extends BinaryOperator<Integer> {
      */
     @Override
     public Operand<Integer> performOperation() {
-        // TODO: Follow the example from PlusOperator to override
-        //   this method (from the version in BinaryOperator)
-        //   for multiplication.
-        return null;
+        Operand<Integer> op0 = this.getOp0();
+        Operand<Integer> op1 = this.getOp1();
+		if (op0 == null || op1 == null) throw new IllegalStateException("Operands cannot be null");
+        return new Operand<Integer>(op0.getValue() * op1.getValue());
     }
 }

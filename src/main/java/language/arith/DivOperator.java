@@ -9,24 +9,31 @@ import language.Operand;
  * @author jcollard, jddevaug
  */
 public class DivOperator extends BinaryOperator<Integer> {
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Operand<Integer> performOperation() {
-        // TODO: Follow the example from PlusOperator to override
-        //   this method (from the version in BinaryOperator)
-        //   for division.
-        return null;
-    }
+	Operand<Integer> op0 = this.getOp0();
+	Operand<Integer> op1 = this.getOp1();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Operand<Integer> performOperation() {
+		if (op0 == null || op1 == null) throw new IllegalStateException();
+		return new Operand<Integer>(op0.getValue() / op1.getValue());
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setOperand(int i, Operand<Integer> operand) {
-        // TODO: For division we need to additionally override
-        //  the setOperand method to check for division by zero.
-        //  See DivOperatorTest (and the README) for usage.
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setOperand(int i, Operand<Integer> operand) {
+		if (operand == null) throw new NullPointerException();
+		if (i != 0 && i != 1) throw new IllegalArgumentException();
+		if (i == 0) {
+			if (op0 != null) throw new IllegalStateException();
+			op0 = operand;
+		}
+		if (i == 1) {
+		if (i == 1 && operand.getValue() == 0 || op1 != null) throw new IllegalStateException();
+			op1 = operand;
+		}
+	}
 }
