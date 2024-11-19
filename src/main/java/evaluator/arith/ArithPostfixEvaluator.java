@@ -1,6 +1,7 @@
 package evaluator.arith;
 
 import evaluator.Evaluator;
+import evaluator.IllegalPostfixExpressionException;
 import language.Operand;
 import language.Operator;
 import language.arith.*;
@@ -37,15 +38,14 @@ public class ArithPostfixEvaluator implements Evaluator<Integer> {
 					stack.push(parser.nextOperand());
 					break;
 				case OPERATOR: //should put into a function later
-					Operand<Integer> op0 = null;
-					Operand<Integer> op1 = null;
-
 					Operator<Integer> operator = parser.nextOperator();
 
-					getOperands(op0, op1, operator);
+					Operand<Integer> op0 = stack.pop();
+					Operand<Integer> op1 = (operator.getNumberOfArguments() == 2) ? stack.pop() : null;
+
 					if (operator.getClass() == DivOperator.class) {
-						operator.setOperand(0, op0);
-						operator.setOperand(1, op1);
+						operator.setOperand(1, op0);
+						operator.setOperand(0, op1);
 						stack.push(operator.performOperation());
 
 					} else if (operator.getClass() == MultOperator.class) {
@@ -63,34 +63,21 @@ public class ArithPostfixEvaluator implements Evaluator<Integer> {
 						stack.push(operator.performOperation());
 
 					} else if (operator.getClass() == SubOperator.class) {
-						operator.setOperand(0, op0);
-						operator.setOperand(1, op1);
+						operator.setOperand(1, op0);
+						operator.setOperand(0, op1);
 						stack.push(operator.performOperation());
-
 					}
 					break;
 				default:
 					//TODO If we get here, something went very wrong
+					
+					// We wont get here
 			}
 		}
 
+		if (stack.size() != 1) {
+			throw new IllegalPostfixExpressionException();
+		}
 		return stack.pop().getValue();
 	}
-
-	private void getOperands(Operand<Integer> op0, Operand<Integer> op1, Operator<Integer> operator) {
-		switch (operator.getNumberOfArguments()) {
-			case 1:
-				op0 = stack.pop();
-				break;
-
-			case 2:
-				op1 = stack.pop();
-
-				break;
-			default:
-				//this would be bad
-				break;
-		}
-	}
 }
-

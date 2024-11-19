@@ -32,7 +32,7 @@ public class DivOperator extends BinaryOperator<Integer> {
 			op0 = operand;
 		}
 		if (i == 1) {
-		if (i == 1 && operand.getValue() == 0 || op1 != null) throw new IllegalStateException();
+			if (i == 1 && operand.getValue() == 0 || op1 != null) throw new IllegalStateException();
 			op1 = operand;
 		}
 	}
